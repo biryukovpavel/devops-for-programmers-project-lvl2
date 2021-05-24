@@ -1,2 +1,4 @@
 .vagrant
 /ansible/env/ssh_key
+.env
+/ansible/tmp/ansible-vault-password
