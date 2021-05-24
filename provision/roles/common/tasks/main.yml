@@ -1,0 +1,19 @@
+---
+- name: Updates apt cache
+  apt:
+    update_cache: yes
+
+- name: Installs necessary packages
+  apt:
+    pkg: "{{ packages }}"
+    state: latest
+  vars:
+    packages:
+      - git
+      - make
+      - python3-pip
+      - postgresql-client
+
+- name: Install 'psycopg2' library
+  pip:
+    name: psycopg2-binary

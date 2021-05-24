@@ -1,0 +1,31 @@
+---
+- hosts: all
+  gather_facts: no
+  tasks:
+    - name: Updates apt cache
+      apt:
+        update_cache: yes
+
+    - name: Installs necessary packages
+      apt:
+        pkg: "{{ packages }}"
+        state: latest
+      vars:
+        packages:
+          - python3-pip
+
+    - name: Install Docker Module for Python
+      pip:
+        name:
+          - docker
+
+    - name: Deploy application
+      docker_container:
+        name: redmine
+        image: redmine:4.2
+        recreate: yes
+        pull: yes
+        ports:
+          - 8080:3000
+        state: started
+        container_default_behavior: compatibility
