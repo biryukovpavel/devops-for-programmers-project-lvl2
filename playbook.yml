@@ -1,29 +1,56 @@
 ---
 - hosts: all
   gather_facts: no
+  vars:
+    APP_DB_HOST: db-postgresql-fra1-88893-do-user-9241775-0.b.db.ondigitalocean.com
+    APP_DB_PORT: "25060"
+    APP_DB_DATABASE: redmine
+    APP_DB_USERNAME: redmine
+    APP_DB_PASSWORD: !vault |
+              $ANSIBLE_VAULT;1.1;AES256
+              62343239626438666630376535383131383832636636323236363061323032323563613035383230
+              3132623531623730386162316636383539336332666662310a653533393631396638396261623465
+              66303962363136376439356433386263623434373736333732636132373832616365303134666466
+              3239383837623433630a303061353563386439633734653731316163646166383738353639633537
+              38643136316132316638343230303933616661636564316237656339626235343234
+    DATADOG_API_KEY: !vault |
+              $ANSIBLE_VAULT;1.1;AES256
+              65623862373234613961633762383062393132643136613531663337636364383332393639366535
+              3137656133626663643731333832323162306662373034370a376561363839633434393839363661
+              34316663303337376632663865396634663661313032343633383236626336653966313138326439
+              6436363937643163340a386437333466386165643733386631376566333761356261303466643963
+              62623835633265633164336535313336643534663666653231613536383634323135623862623431
+              3334633362353062323835313235623235323664373166613533
+    DATADOG_SITE: datadoghq.eu
+    DATADOG_CHECKS:
+      http_check:
+          init_config:
+          instances:
+            - name: Application health check status
+              url: http://localhost:8080
+              timeout: 5
+              method: GET
+      process:
+        init_config:
+        instances:
+          - name: ssh
+            search_string: ['ssh', 'sshd']
+          - name: syslog
+            search_string: ['rsyslog']
+            cpu_check_interval: 0.2
+            exact_match: true
+            ignore_denied_access: true
+  
   tasks:
-    - name: Updates apt cache
-      apt:
-        update_cache: yes
-
-    - name: Installs necessary packages
-      apt:
-        pkg: "{{ packages }}"
-        state: latest
-      vars:
-        packages:
-          - python3-pip
-
-    - name: Install Docker Module for Python
-      pip:
-        name:
-          - docker
+    - include_role:
+        name: common
 
     - name: Deploy application
       docker_container:
         name: redmine
         image: redmine:4.2
         recreate: yes
+        restart_policy: always
         pull: yes
         ports:
           - 8080:3000
@@ -35,3 +62,13 @@
           REDMINE_DB_PASSWORD: "{{ APP_DB_PASSWORD }}"
         state: started
         container_default_behavior: compatibility
+
+    - name: Deploy Datadog Agent
+      include_role:
+        name: datadog.datadog
+        apply:
+          become: yes
+      vars:
+        datadog_api_key: "{{ DATADOG_API_KEY }}"
+        datadog_site: "{{ DATADOG_SITE }}"
+        datadog_checks: "{{ DATADOG_CHECKS }}"

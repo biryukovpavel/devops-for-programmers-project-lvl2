@@ -35,3 +35,10 @@ vault-encrypt:
 			-e ANSIBLE_VAULT_PASSWORD_FILE=project/ansible/tmp/ansible-vault-password \
 			ansible/ansible-runner:1.4 \
 			ansible-vault encrypt_string '$(S)' --name '$(N)'
+
+galaxy-install:
+	docker run -it --rm \
+			-v $(CURDIR):/runner/project \
+			-e ANSIBLE_VAULT_PASSWORD_FILE=project/ansible/tmp/ansible-vault-password \
+			ansible/ansible-runner:1.4 \
+			ansible-galaxy install -r project/ansible/requirements.yml -p project/roles/
