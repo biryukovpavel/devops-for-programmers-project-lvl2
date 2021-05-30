@@ -6,7 +6,7 @@
 - name: Installs necessary packages
   apt:
     pkg: "{{ packages }}"
-    state: latest
+    state: present
   vars:
     packages:
       - python3-pip
