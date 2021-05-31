@@ -1,9 +1,6 @@
 ---
 - hosts: all
   gather_facts: no
-  tasks:
-    - include_role:
-        name: common
-
-    - include_role:
-        name: app-deploy
+  roles:
+    - common
+    - app-deploy
