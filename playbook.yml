@@ -1,6 +1,2 @@
 ---
-- hosts: all
-  gather_facts: no
-  roles:
-    - common
-    - app-deploy
+- import_playbook: ansible/cd.yml

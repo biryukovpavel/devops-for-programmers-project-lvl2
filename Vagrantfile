@@ -35,6 +35,6 @@ Vagrant.configure("2") do |config|
 
   # Run Ansible from the Vagrant Host
   config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "./provision/playbook.yml"
+    ansible.playbook = "./vagrant-provision/playbook.yml"
   end
 end

@@ -21,24 +21,34 @@ compose-bash:
 deploy:
 	docker run --rm -e RUNNER_PLAYBOOK=playbook.yml \
 			-v $(CURDIR):/runner/project \
-			-v $(CURDIR)/ansible/inventory:/runner/inventory \
+			-v $(CURDIR)/ansible/inventories:/runner/inventory \
 			-v $(CURDIR)/ansible/env:/runner/env \
 			-e ANSIBLE_VAULT_PASSWORD_FILE=ansible/tmp/ansible-vault-password \
+			-e ANSIBLE_COLLECTIONS_PATHS=ansible \
+			-e ANSIBLE_ROLES_PATH=ansible/ansible_roles \
 			ansible/ansible-runner:1.4
 
 env-prepare:
 	cp -n .env.example .env || true
 
-vault-encrypt:
+ansible-vault-encrypt:
 	docker run -it --rm \
 			-v $(CURDIR):/runner/project \
 			-e ANSIBLE_VAULT_PASSWORD_FILE=project/ansible/tmp/ansible-vault-password \
 			ansible/ansible-runner:1.4 \
 			ansible-vault encrypt_string '$(S)' --name '$(N)'
 
-galaxy-install:
+ansible-galaxy-install:
 	docker run -it --rm \
 			-v $(CURDIR):/runner/project \
 			-e ANSIBLE_VAULT_PASSWORD_FILE=project/ansible/tmp/ansible-vault-password \
+			-e ANSIBLE_COLLECTIONS_PATHS=project/ansible \
+			-e ANSIBLE_ROLES_PATH=project/ansible/ansible_roles \
 			ansible/ansible-runner:1.4 \
-			ansible-galaxy install -r project/ansible/requirements.yml -p project/roles/
+			ansible-galaxy install -r project/ansible/requirements.yml \
+
+ansible:
+	ansible-playbook -i ./ansible/inventories/hosts playbook.yml --vault-password-file ./ansible/tmp/ansible-vault-password
+
+
+.PHONY: ansible
