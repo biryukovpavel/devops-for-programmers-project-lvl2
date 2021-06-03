@@ -13,4 +13,4 @@
         name: datadog.datadog
         apply:
           become: yes
-      when: datadog_install_agent|default(false) == true
+      when: datadog_install_agent|default(false)|boolean == rue
