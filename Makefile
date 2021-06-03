@@ -45,7 +45,7 @@ ansible-galaxy-install:
 			-e ANSIBLE_COLLECTIONS_PATHS=project/ansible \
 			-e ANSIBLE_ROLES_PATH=project/ansible/ansible_roles \
 			ansible/ansible-runner:1.4 \
-			ansible-galaxy install -r project/ansible/requirements.yml \
+			ansible-galaxy install -r project/requirements.yml \
 
 ansible:
 	ansible-playbook -i ./ansible/inventories/hosts playbook.yml --vault-password-file ./ansible/tmp/ansible-vault-password
