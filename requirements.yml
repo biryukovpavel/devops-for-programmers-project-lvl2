@@ -1,9 +1,4 @@
 ---
-roles:
-  # Install a role from Ansible Galaxy.
-  - name: datadog.datadog
-    version: 4.10.0
-
 collections:
   # Install a collection from Ansible Galaxy.
   - name: community.docker

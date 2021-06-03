@@ -1,16 +1,6 @@
 ---
 - hosts: all
   gather_facts: yes
-  tasks:
-    - include_role:
-        name: common
-
-    - include_role:
-        name: app-deploy
-
-    - name: Deploy Datadog Agent
-      include_role:
-        name: datadog.datadog
-        apply:
-          become: yes
-      when: datadog_install_agent|default(False)
+  roles:
+    - common
+    - app-deploy
