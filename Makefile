@@ -25,7 +25,7 @@ deploy:
 			-v $(CURDIR)/ansible/env:/runner/env \
 			-e ANSIBLE_VAULT_PASSWORD_FILE=ansible/tmp/ansible-vault-password \
 			-e ANSIBLE_COLLECTIONS_PATHS=ansible \
-			-e ANSIBLE_ROLES_PATH=ansible/ansible_roles \
+			-e ANSIBLE_ROLES_PATH=ansible/thirdparty_roles \
 			ansible/ansible-runner:1.4
 
 env-prepare:
@@ -43,9 +43,9 @@ ansible-galaxy-install:
 			-v $(CURDIR):/runner/project \
 			-e ANSIBLE_VAULT_PASSWORD_FILE=project/ansible/tmp/ansible-vault-password \
 			-e ANSIBLE_COLLECTIONS_PATHS=project/ansible \
-			-e ANSIBLE_ROLES_PATH=project/ansible/ansible_roles \
+			-e ANSIBLE_ROLES_PATH=project/ansible/thirdparty_roles \
 			ansible/ansible-runner:1.4 \
-			ansible-galaxy install -r project/requirements.yml \
+			ansible-galaxy install -r project/requirements.yml
 
 ansible:
 	ansible-playbook -i ./ansible/inventories/hosts playbook.yml --vault-password-file ./ansible/tmp/ansible-vault-password
