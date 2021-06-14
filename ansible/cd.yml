@@ -8,7 +8,7 @@
     - include_role:
         name: app-deploy
 
-    - name: Deploy Datadog Agent
-      include_role:
-        name: datadog.datadog
-      when: datadog_install_agent|default(False)
+    # - name: Deploy Datadog Agent
+    #   include_role:
+    #     name: datadog.datadog
+    #   when: datadog_install_agent|default(False)
