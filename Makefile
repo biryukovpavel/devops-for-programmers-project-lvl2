@@ -47,6 +47,7 @@ ansible-galaxy-install:
 			ansible/ansible-runner:1.4 \
 			ansible-galaxy install -r project/requirements.yml
 
+# For run Ansible(not ansible-runner)
 ansible:
 	ansible-playbook -i ./ansible/inventories/hosts playbook.yml --vault-password-file ./ansible/tmp/ansible-vault-password
 
