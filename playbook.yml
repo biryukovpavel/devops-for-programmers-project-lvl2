@@ -1,2 +1,11 @@
 ---
-- import_playbook: ansible/cd.yml
+- hosts: all
+  gather_facts: yes
+  roles:
+    - common
+    - app-deploy
+
+- hosts: webservers
+  gather_facts: yes
+  roles:
+    - datadog.datadog

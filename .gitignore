@@ -1,7 +1,7 @@
 .vagrant
-/ansible/env/ssh_key
-/ansible/tmp/ansible-vault-password
-ansible/thirdparty_roles/*
-ansible/ansible_collections/*
+env/ssh_key
+tmp/ansible-vault-password
+thirdparty_roles/*
+ansible_collections/*
 .env
 !.gitkeep
