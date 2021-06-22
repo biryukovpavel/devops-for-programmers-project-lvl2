@@ -1,6 +1,6 @@
 ---
 - name: Deploy redmine application
-  docker_container:
+  community.docker.docker_container:
     name: redmine
     image: redmine:{{ app_version }}
     recreate: yes

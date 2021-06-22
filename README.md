@@ -18,7 +18,6 @@
 <a name="requirements"></a>
 ## Требования
 - Make
-- Docker
 - Ansible 2.9 или выше
 
 <a name="getting-started"></a>
