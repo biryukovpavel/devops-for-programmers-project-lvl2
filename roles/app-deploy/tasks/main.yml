@@ -16,3 +16,4 @@
       REDMINE_DB_USERNAME: "{{ app_db_username }}"
       REDMINE_DB_PASSWORD: "{{ app_db_password }}"
     state: started
+    container_default_behavior: compatibility
